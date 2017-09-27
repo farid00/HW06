@@ -15,6 +15,8 @@ defmodule MicroblogWeb.FollowController do
   end
 
   def create(conn, %{"follow" => follow_params}) do
+    user_id = get_session(conn, :user_id)
+    follow_params = Map.put(follow_params, "user_id", user_id)
     case Account.create_follow(follow_params) do
       {:ok, follow} ->
         conn

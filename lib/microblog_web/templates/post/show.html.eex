@@ -5,6 +5,13 @@
   <li>
     <strong>Text:</strong>
     <%= @post.text %>
+
+  </li>
+
+  <li>
+    <strong>User Id:</strong>
+    <%= @post.id %>
+    
   </li>
 
 </ul>

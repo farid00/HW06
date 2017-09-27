@@ -24,5 +24,30 @@
 
 </ul>
 
+<%= render "follow_form.html", Map.put(assigns, :action, follow_path(@conn, :create)) %>
+
+<h2>Users You Are Following </h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Nickname</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for follow <- @user.following do %>
+        <tr>
+          <td><%= follow.username %></td>
+          <td><%= follow.first_name %></td>
+          <td><%= follow.last_name %></td>
+          <td><%= follow.nickname %></td>
+
+        </tr>
+    <% end %>
+  </tbody>
+</table>
+
 <span><%= link "Edit", to: user_path(@conn, :edit, @user) %></span>
 <span><%= link "Back", to: user_path(@conn, :index) %></span>

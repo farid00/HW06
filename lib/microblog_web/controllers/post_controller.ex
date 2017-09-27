@@ -6,7 +6,8 @@ defmodule MicroblogWeb.PostController do
 
   def index(conn, _params) do
     posts = Messages.list_posts()
-    render(conn, "index.html", posts: posts)
+    changeset = Messages.change_post(%Post{})
+    render(conn, "index_and_post.html", posts: posts, changeset: changeset)
   end
 
   def new(conn, _params) do
@@ -15,6 +16,8 @@ defmodule MicroblogWeb.PostController do
   end
 
   def create(conn, %{"post" => post_params}) do
+    user_id = get_session(conn, :user_id)
+    post_params = Map.put(post_params, "user_id", user_id)
     case Messages.create_post(post_params) do
       {:ok, post} ->
         conn

@@ -3,16 +3,22 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Text</th>
-
+      <th>Username</th>
+      <th>Post</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
 <%= for post <- @posts do %>
     <tr>
+      <td>
+      <%= if post.user do %>
+        <%= post.user.username %>
+      <%= else %>
+        N/A
+      <%= end %>
+      </td>
       <td><%= post.text %></td>
-
       <td class="text-right">
         <span><%= link "Show", to: post_path(@conn, :show, post), class: "btn btn-default btn-xs" %></span>
         <span><%= link "Edit", to: post_path(@conn, :edit, post), class: "btn btn-default btn-xs" %></span>

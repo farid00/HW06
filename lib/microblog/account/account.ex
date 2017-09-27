@@ -7,6 +7,7 @@ defmodule Microblog.Account do
   alias Microblog.Repo
 
   alias Microblog.Account.User
+  alias Microblog.Account.Authentication
 
   @doc """
   Returns the list of users.
@@ -35,7 +36,10 @@ defmodule Microblog.Account do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user!(id) do
+    Repo.get!(User, id)
+    |> Repo.preload(:following)
+  end
 
   @doc """
   Creates a user.
@@ -53,6 +57,14 @@ defmodule Microblog.Account do
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
+  end
+
+  @doc """
+  Logs in a user.
+
+  """
+  def login_user(%{"username" => username}, attrs \\ %{}) do
+    Repo.get_by(User, username: username)
   end
 
   @doc """
@@ -101,6 +113,16 @@ defmodule Microblog.Account do
   def change_user(%User{} = user) do
     User.changeset(user, %{})
   end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking user changes.
+
+  """
+  def change_authentication(%Authentication{} = auth) do
+    Authentication.changeset(auth, %{})
+  end
+
+
 
   alias Microblog.Account.Follow
 

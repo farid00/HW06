@@ -9,6 +9,7 @@ defmodule Microblog.Account.User do
     field :last_name, :string
     field :nickname, :string
     field :username, :string
+    many_to_many :following, User, join_through: Microblog.Account.Follow, join_keys: [user_id: :id, following_id: :id]
 
     timestamps()
   end
