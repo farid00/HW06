@@ -18,7 +18,8 @@ defmodule Microblog.Messages do
 
   """
   def list_posts do
-    Post
+    query = from p in Post, order_by: [desc: p.updated_at]
+    query
     |> Repo.all()
     |> Repo.preload(:user)
   end

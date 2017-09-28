@@ -6,7 +6,6 @@
   <% end %>
 
   <div class="form-group">
-    <%= label f, :text, class: "control-label" %>
     <%= textarea f, :text, class: "form-control" %>
     <%= error_tag f, :text %>
   </div>

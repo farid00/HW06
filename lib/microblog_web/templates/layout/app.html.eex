@@ -1,38 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Hello Microblog!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
-  </head>
+</head>
 
-  <body>
-    <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-          </ul>
+<body>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Rick's Microblog</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <span><%= link "Users", to: user_path(@conn, :index), class: "nav-link" %></span>
+                    </li>
+                    <li class="nav-item">
+                        <span><%= link "Posts", to: post_path(@conn, :index), class: "nav-link" %></span>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <span><%= link "Sign In", to: authentication_path(@conn, :index), class: "nav-link" %></span>
+                </ul>
+            </div>
         </nav>
+    <div class="container">
         <span class="logo"></span>
-      </header>
-
-      <%= if get_flash(@conn, :info) do %>
-        <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <% end %>
-      <%= if get_flash(@conn, :error) do %>
-        <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-      <% end %>
-
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
-
-    </div> <!-- /container -->
+        </header>
+        <%= if get_flash(@conn, :info) do %>
+          <p class="alert alert-info" role="alert">
+            <%= get_flash(@conn, :info) %>
+          </p>
+        <% end %>
+        <%= if get_flash(@conn, :error) do %>
+          <p class="alert alert-danger" role="alert">
+            <%= get_flash(@conn, :error) %>
+          </p>
+        <% end %>
+        <main role="main">
+          <%= render @view_module, @view_template, assigns %>
+        </main>
+    </div>
+    <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
-  </body>
+</body>
+
 </html>

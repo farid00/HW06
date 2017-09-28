@@ -25,6 +25,8 @@
 </ul>
 
 <%= render "follow_form.html", Map.put(assigns, :action, follow_path(@conn, :create)) %>
+<span><%= link "Edit", to: user_path(@conn, :edit, @user), class: "btn btn-primary" %></span>
+<span><%= link "Back", to: user_path(@conn, :index), class: "btn btn-primary" %></span>
 
 <h2>Users You Are Following </h2>
 <table class="table">
@@ -49,5 +51,3 @@
   </tbody>
 </table>
 
-<span><%= link "Edit", to: user_path(@conn, :edit, @user) %></span>
-<span><%= link "Back", to: user_path(@conn, :index) %></span>

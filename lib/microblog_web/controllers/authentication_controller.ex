@@ -13,8 +13,16 @@ defmodule MicroblogWeb.AuthenticationController do
 
   def create(conn, %{"authentication" => auth_params}) do
     user = Account.login_user(%{"username" => auth_params["username"]})
-    conn
-    |> put_session(:user_id, user.id)
-    |> redirect(to: user_path(conn, :show, user))
+    
+    if user do
+      conn
+      |> put_session(:user_id, user.id)
+      |> put_flash(:info, "Logged in as #{user.username}")
+      |> redirect(to: user_path(conn, :show, user))
+    else
+      conn
+      |> put_flash(:error, "No user could be found with that username, try again")
+      |> redirect(to: authentication_path(conn, :index))
+    end 
   end
 end
