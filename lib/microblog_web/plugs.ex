@@ -1,3 +1,6 @@
+# This module is inspired by the plugs file in 
+# https://github.com/NatTuck/nu_mart/tree/master/lib/nu_mart_web
+#
 defmodule MicroblogWeb.Plugs do
 	import Plug.Conn
 	alias Microblog.Account.User
