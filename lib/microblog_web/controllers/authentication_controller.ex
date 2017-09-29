@@ -25,4 +25,12 @@ defmodule MicroblogWeb.AuthenticationController do
       |> redirect(to: authentication_path(conn, :index))
     end 
   end
+
+  def logout(conn, _params) do
+    conn
+    |> put_session(:user_id, nil)
+    |> assign(:current_user, nil)
+    |> put_flash(:info, "You have logged out")
+    |> redirect(to: post_path(conn, :index))
+  end
 end

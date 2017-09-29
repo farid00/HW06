@@ -16,14 +16,20 @@ defmodule MicroblogWeb.FollowController do
 
   def create(conn, %{"follow" => follow_params}) do
     user_id = get_session(conn, :user_id)
-    follow_params = Map.put(follow_params, "user_id", user_id)
-    case Account.create_follow(follow_params) do
-      {:ok, follow} ->
-        conn
-        |> put_flash(:info, "Follow created successfully.")
-        |> redirect(to: follow_path(conn, :show, follow))
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+    if user_id do
+      follow_params = Map.put(follow_params, "user_id", user_id)
+      case Account.create_follow(follow_params) do
+        {:ok, follow} ->
+          conn
+          |> put_flash(:info, "Follow created successfully.")
+          |> redirect(to: user_path(conn, :show, user_id))
+        {:error, %Ecto.Changeset{} = changeset} ->
+          render(conn, "new.html", changeset: changeset)
+      end
+    else
+      conn
+      |> put_flash(:info, "Please login to follow")
+      |> redirect(to: user_path(conn, :index))
     end
   end
 

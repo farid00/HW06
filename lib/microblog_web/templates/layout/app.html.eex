@@ -27,7 +27,12 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
-                    <span><%= link "Sign In", to: authentication_path(@conn, :index), class: "nav-link" %></span>
+                    <%= if @current_user do %>
+                        <span><%= link("Sign Out", to: authentication_path(@conn, :logout), class: "nav-link", method: "delete") %></span>
+                    <% else %> 
+                        <span><%= link("Sign In", to: authentication_path(@conn, :index), class: "nav-link") %></span>
+                    <% end %>
+
                 </ul>
             </div>
         </nav>
