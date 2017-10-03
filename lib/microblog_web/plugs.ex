@@ -17,9 +17,14 @@ defmodule MicroblogWeb.Plugs do
 		user_id = get_session(conn, :user_id)
 		if user_id do
 			current_user = get_user(user_id)
-			conn
-			|> assign(:current_user, current_user)
-			|> assign(:logout_message, current_user.username <> " | Sign Out")
+			if current_user do
+				conn
+				|> assign(:current_user, current_user)
+				|> assign(:logout_message, current_user.username <> " | Sign Out")
+			else 
+				conn
+				|> assign(:current_user, nil)
+			end
 		else
 			conn
 			|> assign(:current_user, nil)

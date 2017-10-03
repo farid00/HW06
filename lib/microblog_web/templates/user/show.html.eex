@@ -41,7 +41,7 @@
       <th>First name</th>
       <th>Last name</th>
       <th>Nickname</th>
-      <%= if @current_user.id == @user.id do %>
+      <%= if @current_user and @current_user.id == @user.id do %>
       <th></th>
       <% end %>
     </tr>
@@ -53,7 +53,7 @@
           <td><%= follow.first_name %></td>
           <td><%= follow.last_name %></td>
           <td><%= follow.nickname %></td>
-          <%= if @current_user.id == @user.id do %>
+          <%= if @current_user and @current_user.id == @user.id do %>
           <td class="text-right">
             <span><%= link "Unfollow", to: follow_path(@conn, :delete, follow), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger" %></span>
           </td>

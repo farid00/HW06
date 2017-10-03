@@ -16,7 +16,7 @@ defmodule MicroblogWeb.PostController do
   end
 
   def show(conn, %{"id" => id }) do
-    user_id = get_session(conn, :user_id)
+
     post = Messages.get_post!(id)
     render(conn, "show.html", post: post)
   end
