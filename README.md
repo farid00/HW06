@@ -1,5 +1,7 @@
 Github Repo: https://github.com/farid00/microblog
 Deployed Application: http://microblog.ricksanchez.club
+NGINX CONF: microblog.conf
+systemd: microblog.service
 
 Login: 
 -You can login with any created User and your session is saved in a cookie. 
