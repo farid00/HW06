@@ -7,6 +7,7 @@ defmodule Microblog.Messages do
   alias Microblog.Repo
 
   alias Microblog.Messages.Post
+  alias Microblog.Account.Follow
 
   @doc """
   Returns the list of posts.
@@ -21,6 +22,14 @@ defmodule Microblog.Messages do
     query = from p in Post, order_by: [desc: p.updated_at]
     query
     |> Repo.all()
+    |> Repo.preload(:user)
+  end
+
+  def list_posts(current_user_id) do
+    IO.puts current_user_id
+    query = from p in Post,
+              join: f in Follow, on: p.user_id == f.following_id and f.user_id == ^current_user_id
+    Repo.all(query)
     |> Repo.preload(:user)
   end
 

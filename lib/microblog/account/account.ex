@@ -8,6 +8,7 @@ defmodule Microblog.Account do
 
   alias Microblog.Account.User
   alias Microblog.Account.Authentication
+  alias Microblog.Account.Follow
 
   @doc """
   Returns the list of users.
@@ -66,6 +67,16 @@ defmodule Microblog.Account do
   def login_user(%{"username" => username}, attrs \\ %{}) do
     Repo.get_by(User, username: username)
   end
+
+  @doc """
+  Checks if follow relationship exists
+
+  """
+  def is_following(user_id, following_id, attrs \\ %{}) do
+    Repo.get_by(Follow, user_id: user_id, following_id: following_id)
+  end
+
+
 
   @doc """
   Updates a user.
@@ -203,9 +214,13 @@ defmodule Microblog.Account do
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_follow(%Follow{} = follow) do
-    Repo.delete(follow)
+  def delete_follow(user_id, following_id) do
+
+    from(f in Follow, where: f.user_id == ^user_id and f.following_id == ^following_id)
+    |> Repo.delete_all
   end
+
+
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking follow changes.

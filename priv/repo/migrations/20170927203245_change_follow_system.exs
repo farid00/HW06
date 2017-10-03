@@ -1,4 +1,4 @@
-defmodule Microblog.Repo.Migrations.UpdateFollowTable do
+defmodule Microblog.Repo.Migrations.ChangeFollowSystem do
   use Ecto.Migration
 
   def change do

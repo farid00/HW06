@@ -24,11 +24,16 @@
 
 </ul>
 
-<%= render "follow_form.html", Map.put(assigns, :action, follow_path(@conn, :create)) %>
+<%= if @is_followed do %>
+  <span><%= link "Unfollow", to: follow_path(@conn, :delete, @user), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger" %></span>
+<% else %>
+  <%= render "follow_form.html", Map.put(assigns, :action, follow_path(@conn, :create)) %>
+<% end %>
+
 <span><%= link "Edit", to: user_path(@conn, :edit, @user), class: "btn btn-primary" %></span>
 <span><%= link "Back", to: user_path(@conn, :index), class: "btn btn-primary" %></span>
 
-<h2>Users You Are Following </h2>
+<h2>Users <%= @user.username %> Is Following </h2>
 <table class="table">
   <thead>
     <tr>
@@ -36,6 +41,9 @@
       <th>First name</th>
       <th>Last name</th>
       <th>Nickname</th>
+      <%= if @current_user.id == @user.id do %>
+      <th></th>
+      <% end %>
     </tr>
   </thead>
   <tbody>
@@ -45,7 +53,11 @@
           <td><%= follow.first_name %></td>
           <td><%= follow.last_name %></td>
           <td><%= follow.nickname %></td>
-
+          <%= if @current_user.id == @user.id do %>
+          <td class="text-right">
+            <span><%= link "Unfollow", to: follow_path(@conn, :delete, follow), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger" %></span>
+          </td>
+          <% end %>
         </tr>
     <% end %>
   </tbody>

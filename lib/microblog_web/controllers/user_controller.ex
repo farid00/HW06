@@ -1,6 +1,5 @@
 defmodule MicroblogWeb.UserController do
   use MicroblogWeb, :controller
-
   alias Microblog.Account
   alias Microblog.Account.User
   alias Microblog.Account.Follow
@@ -18,6 +17,7 @@ defmodule MicroblogWeb.UserController do
   def create(conn, %{"user" => user_params}) do
     case Account.create_user(user_params) do
       {:ok, user} ->
+        Account.create_follow(%{user_id: user.id, following_id: user.id})
         conn
         |> put_flash(:info, "User created successfully.")
         |> redirect(to: user_path(conn, :show, user))
@@ -28,8 +28,13 @@ defmodule MicroblogWeb.UserController do
 
   def show(conn, %{"id" => id}) do
     user = Account.get_user!(id)
+    if conn.assigns.current_user do
+      is_followed = Account.is_following(conn.assigns.current_user.id, id)
+    else
+      is_followed = nil
+    end
     changeset = Account.change_follow(%Follow{})
-    render(conn, "show.html", user: user, changeset: changeset)
+    render(conn, "show.html", user: user, changeset: changeset, is_followed: is_followed)
   end
 
   def edit(conn, %{"id" => id}) do

@@ -19,6 +19,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
+                    <%= if @current_user do %>
+                    <li class="nav-item active">
+                        <span><%= link "Profile", to: user_path(@conn, :show, @current_user), class: "nav-link" %></span>
+                    </li>
+                    <% end %>
                     <li class="nav-item active">
                         <span><%= link "Users", to: user_path(@conn, :index), class: "nav-link" %></span>
                     </li>
@@ -27,12 +32,15 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
-                    <%= if @current_user do %>
-                        <span><%= link("Sign Out", to: authentication_path(@conn, :logout), class: "nav-link", method: "delete") %></span>
-                    <% else %> 
-                        <span><%= link("Sign In", to: authentication_path(@conn, :index), class: "nav-link") %></span>
-                    <% end %>
-
+                    <li class="nav-item">
+                        <%= if @current_user do %>
+                            <span>
+                                <%= link(@logout_message, to: authentication_path(@conn, :logout), class: "nav-link", method: "delete") %>                           
+                            </span>
+                        <% else %> 
+                            <span><%= link("Sign In", to: authentication_path(@conn, :index), class: "nav-link") %></span>
+                        <% end %>
+                    </li>
                 </ul>
             </div>
         </nav>

@@ -5,9 +5,20 @@ defmodule MicroblogWeb.PostController do
   alias Microblog.Messages.Post
 
   def index(conn, _params) do
-    posts = Messages.list_posts()
+    user_id = get_session(conn, :user_id)
+    if user_id do
+      posts = Messages.list_posts(user_id)
+    else 
+      posts = Messages.list_posts()
+    end
     changeset = Messages.change_post(%Post{})
     render(conn, "index_and_post.html", posts: posts, changeset: changeset)
+  end
+
+  def show(conn, %{"id" => id }) do
+    user_id = get_session(conn, :user_id)
+    post = Messages.get_post!(id)
+    render(conn, "show.html", post: post)
   end
 
   def new(conn, _params) do
@@ -28,7 +39,7 @@ defmodule MicroblogWeb.PostController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
+  def shows(conn, %{"id" => id}) do
     post = Messages.get_post!(id)
     render(conn, "show.html", post: post)
   end

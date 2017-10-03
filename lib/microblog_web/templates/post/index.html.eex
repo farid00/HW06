@@ -1,4 +1,4 @@
-<h2>Listing Posts</h2>
+<h2>Posts By People You Follow</h2>
 
 <table class="table">
   <thead>
@@ -14,16 +14,11 @@
       <td>
       <%= if post.user do %>
         <%= post.user.username %>
-      <%= else %>
+      <% else %>
         N/A
-      <%= end %>
+      <% end %>
       </td>
       <td><%= post.text %></td>
-      <td class="text-right">
-        <span><%= link "Show", to: post_path(@conn, :show, post), class: "btn btn-primary" %></span>
-        <span><%= link "Edit", to: post_path(@conn, :edit, post), class: "btn btn-primary" %></span>
-        <span><%= link "Delete", to: post_path(@conn, :delete, post), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
-      </td>
     </tr>
 <% end %>
   </tbody>

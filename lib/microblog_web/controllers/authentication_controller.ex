@@ -2,7 +2,6 @@ defmodule MicroblogWeb.AuthenticationController do
   use MicroblogWeb, :controller
 
   alias Microblog.Account
-  alias Microblog.Account.User
   alias Microblog.Account.Authentication
 
 
