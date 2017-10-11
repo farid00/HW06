@@ -18,6 +18,8 @@ import "phoenix_html"
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
+//ATRRIBUTED to the NUMART REPO
+
 // import socket from "./socket"
 let handlebars = require("handlebars");
 
@@ -36,7 +38,6 @@ $(function() {
   let p_id = dd.data('post_id');
 
   let bb = $($("#like-button")[0]);
-  let u_id = bb.data('user-id');
 
   // let bb = $($("#review-add-button")[0]);
   // let u_id = bb.data('user-id');
