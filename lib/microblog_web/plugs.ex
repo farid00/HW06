@@ -20,10 +20,12 @@ defmodule MicroblogWeb.Plugs do
 			if current_user do
 				conn
 				|> assign(:current_user, current_user)
+				|> assign(:current_user_id, current_user.id)
 				|> assign(:logout_message, current_user.username <> " | Sign Out")
 			else 
 				conn
 				|> assign(:current_user, nil)
+				|> assign(:current_user_id, nil)
 			end
 		else
 			conn

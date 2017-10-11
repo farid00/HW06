@@ -23,11 +23,12 @@
   </li>
 
 </ul>
-
+<%= if @current_user do %>
 <%= if @is_followed do %>
   <span><%= link "Unfollow", to: follow_path(@conn, :delete, @user), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger" %></span>
 <% else %>
   <%= render "follow_form.html", Map.put(assigns, :action, follow_path(@conn, :create)) %>
+<% end %>
 <% end %>
 
 <span><%= link "Edit", to: user_path(@conn, :edit, @user), class: "btn btn-primary" %></span>
@@ -41,8 +42,10 @@
       <th>First name</th>
       <th>Last name</th>
       <th>Nickname</th>
-      <%= if @current_user and @current_user.id == @user.id do %>
+      <%= if @current_user do %>
+      <%= if @current_user.id == @user.id do %>
       <th></th>
+      <% end %>
       <% end %>
     </tr>
   </thead>
@@ -53,10 +56,12 @@
           <td><%= follow.first_name %></td>
           <td><%= follow.last_name %></td>
           <td><%= follow.nickname %></td>
-          <%= if @current_user and @current_user.id == @user.id do %>
+          <%= if @current_user do %>
+          <%= if @current_user.id == @user.id do %>
           <td class="text-right">
             <span><%= link "Unfollow", to: follow_path(@conn, :delete, follow), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger" %></span>
           </td>
+          <% end %>
           <% end %>
         </tr>
     <% end %>

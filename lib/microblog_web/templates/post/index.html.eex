@@ -1,3 +1,5 @@
+
+
 <h2>Posts By People You Follow</h2>
 
 <table class="table">
@@ -19,6 +21,9 @@
       <% end %>
       </td>
       <td><%= post.text %></td>
+      <td>
+      <span><%= link "Show", to: post_path(@conn, :show, post), class: "btn btn-primary" %></span>
+      </td>
     </tr>
 <% end %>
   </tbody>

@@ -28,11 +28,12 @@ defmodule MicroblogWeb.UserController do
 
   def show(conn, %{"id" => id}) do
     user = Account.get_user!(id)
-    if conn.assigns.current_user do
-      is_followed = Account.is_following(conn.assigns.current_user.id, id)
-    else
-      is_followed = nil
-    end
+    is_followed = 
+      case conn.assigns.current_user do
+        nil -> nil
+        _ -> Account.is_following(conn.assigns.current_user_id, id)
+      end
+
     changeset = Account.change_follow(%Follow{})
     render(conn, "show.html", user: user, changeset: changeset, is_followed: is_followed)
   end
