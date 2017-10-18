@@ -1,15 +1,15 @@
 defmodule MicroblogWeb.PostControllerTest do
   use MicroblogWeb.ConnCase
 
-  alias Microblog.API
-  alias Microblog.API.Post
+  alias Microblog.Messages
+  alias Microblog.Messages.Post
 
   @create_attrs %{}
   @update_attrs %{}
   @invalid_attrs %{}
 
   def fixture(:post) do
-    {:ok, post} = API.create_post(@create_attrs)
+    {:ok, post} = Messages.create_post(@create_attrs)
     post
   end
 
