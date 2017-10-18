@@ -22,8 +22,8 @@
   <button id="like-button" class="btn btn-primary">Like!</button>
 </span>
 <% end %>
-<span><%= link "Edit", to: post_path(@conn, :edit, @post), class: "btn btn-primary" %></span>
-<span><%= link "Back", to: post_path(@conn, :index), class: "btn btn-primary" %></span>
+<span><%= link "Edit", to: display_post_path(@conn, :edit, @post), class: "btn btn-primary" %></span>
+<span><%= link "Back", to: display_post_path(@conn, :index), class: "btn btn-primary" %></span>
 
 
 <div id="post-likes"

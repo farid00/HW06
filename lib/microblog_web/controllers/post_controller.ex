@@ -3,72 +3,51 @@ defmodule MicroblogWeb.PostController do
 
   alias Microblog.Messages
   alias Microblog.Messages.Post
+  alias MicroblogWeb.UpdatesChannel
+
+  action_fallback MicroblogWeb.FallbackController
 
   def index(conn, _params) do
-    user_id = get_session(conn, :user_id)
-    if user_id do
-      posts = Messages.list_posts(user_id)
-    else 
-      posts = Messages.list_posts()
-    end
-    changeset = Messages.change_post(%Post{})
-    render(conn, "index_and_post.html", posts: posts, changeset: changeset)
-  end
 
-  def show(conn, %{"id" => id }) do
-
-    post = Messages.get_post!(id)
-    render(conn, "show.html", post: post)
-  end
-
-  def new(conn, _params) do
-    changeset = Messages.change_post(%Post{})
-    render(conn, "new.html", changeset: changeset)
+    posts = 
+      case conn.assigns.current_user do
+        nil -> Messages.list_posts()
+        _ -> Messages.list_posts(conn.assigns.current_user_id)
+      end
+    render(conn, "index.json", posts: posts)
   end
 
   def create(conn, %{"post" => post_params}) do
-    user_id = get_session(conn, :user_id)
-    post_params = Map.put(post_params, "user_id", user_id)
-    case Messages.create_post(post_params) do
-      {:ok, post} ->
-        conn
-        |> put_flash(:info, "Post created successfully.")
-        |> redirect(to: post_path(conn, :index))
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+    if conn.assigns.current_user do
+      post_params = Map.put(post_params, "user_id", conn.assigns.current_user_id)
+    end
+    with {:ok, %Post{} = post} <- Messages.create_post(post_params) do
+      UpdatesChannel.broadcast_post(conn, post)
+
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", post_path(conn, :show, post))
+      |> render("show.json", post: post)
     end
   end
 
-  def shows(conn, %{"id" => id}) do
+  def show(conn, %{"id" => id}) do
     post = Messages.get_post!(id)
-    render(conn, "show.html", post: post)
-  end
-
-  def edit(conn, %{"id" => id}) do
-    post = Messages.get_post!(id)
-    changeset = Messages.change_post(post)
-    render(conn, "edit.html", post: post, changeset: changeset)
+    render(conn, "show.json", post: post)
   end
 
   def update(conn, %{"id" => id, "post" => post_params}) do
     post = Messages.get_post!(id)
 
-    case Messages.update_post(post, post_params) do
-      {:ok, post} ->
-        conn
-        |> put_flash(:info, "Post updated successfully.")
-        |> redirect(to: post_path(conn, :index))
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", post: post, changeset: changeset)
+    with {:ok, %Post{} = post} <- Messages.update_post(post, post_params) do
+      render(conn, "show.json", post: post)
     end
   end
 
   def delete(conn, %{"id" => id}) do
     post = Messages.get_post!(id)
-    {:ok, _post} = Messages.delete_post(post)
-
-    conn
-    |> put_flash(:info, "Post deleted successfully.")
-    |> redirect(to: post_path(conn, :index))
+    with {:ok, %Post{}} <- Messages.delete_post(post) do
+      send_resp(conn, :no_content, "")
+    end
   end
 end

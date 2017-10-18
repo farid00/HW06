@@ -25,12 +25,12 @@ defmodule MicroblogWeb.Router do
     resources "/likes", LikeController, except: [:new, :edit]
     resources "/follows", FollowController, except: [:index, :show]
     resources "/users", UserController
-    resources "/posts", PostController
+    resources "/posts", DisplayPostController
     get "/", AuthenticationController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", MicroblogWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", MicroblogWeb do
+    pipe_through :api
+    resources "/posts", PostController, except: [:new, :edit]
+  end
 end

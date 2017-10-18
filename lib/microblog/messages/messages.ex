@@ -27,7 +27,7 @@ defmodule Microblog.Messages do
 
   def list_posts(current_user_id) do
     IO.puts current_user_id
-    query = from p in Post,
+    query = from p in Post, order_by: [desc: p.updated_at],
               join: f in Follow, on: p.user_id == f.following_id and f.user_id == ^current_user_id
     Repo.all(query)
     |> Repo.preload(:user)

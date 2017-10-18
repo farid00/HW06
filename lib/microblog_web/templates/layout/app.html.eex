@@ -28,7 +28,7 @@
                         <span><%= link "Users", to: user_path(@conn, :index), class: "nav-link" %></span>
                     </li>
                     <li class="nav-item">
-                        <span><%= link "Posts", to: post_path(@conn, :index), class: "nav-link" %></span>
+                        <span><%= link "Posts", to: display_post_path(@conn, :index), class: "nav-link" %></span>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">

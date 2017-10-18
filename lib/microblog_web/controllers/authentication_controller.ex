@@ -17,7 +17,7 @@ defmodule MicroblogWeb.AuthenticationController do
       conn
       |> put_session(:user_id, user.id)
       |> put_flash(:info, "Logged in as #{user.username}")
-      |> redirect(to: user_path(conn, :show, user))
+      |> redirect(to: display_post_path(conn, :index))
     else
       conn
       |> put_flash(:error, "No user could be found with that username, try again")
@@ -30,6 +30,6 @@ defmodule MicroblogWeb.AuthenticationController do
     |> put_session(:user_id, nil)
     |> assign(:current_user, nil)
     |> put_flash(:info, "You have logged out")
-    |> redirect(to: post_path(conn, :index))
+    |> redirect(to: display_post_path(conn, :index))
   end
 end

@@ -1,0 +1,3 @@
+<h2>New Post</h2>
+<%= render "form.html", Map.put(assigns, :action, display_post_path(@conn, :create)) %>
+<%= render "index.html", assigns %>

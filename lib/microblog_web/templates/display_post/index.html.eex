@@ -1,0 +1,44 @@
+
+<%= if @current_user do %>
+  <h2>Posts By People You Follow</h2>
+<% else %>
+  <h2>Posts By Everyone</h2>
+<% end %>
+
+  <div id="post-target"
+     data-path="<%= post_path(@conn, :index) %>">
+  &nbsp;
+  </div>
+
+
+<script id="post-template" type="text/x-handlebars-template">
+<table class="table" id="postTable">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Post</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  {{#each data}}
+  <tr>
+      <td>
+      {{#if username}}
+        {{username}}
+      {{else}}
+        N/A
+      {{/if}}
+      </td>
+      <td>
+        {{text}}
+      </td>
+      <td>
+      <a href="/posts/{{id}}" class="btn btn-primary"> Show </a>
+      </td>
+      {{/each}}
+  </tr>
+  </tbody>
+</table>
+</script>
+

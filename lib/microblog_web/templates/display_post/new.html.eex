@@ -2,4 +2,4 @@
 
 <%= render "form.html", Map.put(assigns, :action, post_path(@conn, :create)) %>
 
-<span><%= link "Back", to: post_path(@conn, :index) %></span>
+<span><%= link "Back", to: display_post_path(@conn, :index) %></span>
