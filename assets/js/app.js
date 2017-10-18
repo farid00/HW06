@@ -125,8 +125,8 @@ $(function() {
   }
 
   channel.on("new_message", payload => {
-    $("#postTable > tbody").prepend("<td>" + payload.username + "</td><td>" + payload.text + 
-      "</td><td><a href=/posts/" + payload.id + " class= \"btn btn-primary\">Show</a></td>")
+    $("#postTable > tbody").prepend("<tr><td>" + payload.username + "</td><td>" + payload.text + 
+      "</td><td><a href=/posts/" + payload.id + " class= \"btn btn-primary\">Show</a></td></tr>")
   });
 
 
