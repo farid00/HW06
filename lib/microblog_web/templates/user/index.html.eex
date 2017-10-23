@@ -21,8 +21,12 @@
 
       <td class="text-right">
         <span><%= link "Show", to: user_path(@conn, :show, user), class: "btn btn-primary" %></span>
+        <%= if @current_user do %>
+        <%= if @current_user.id == user.id do %>
         <span><%= link "Edit", to: user_path(@conn, :edit, user), class: "btn btn-primary" %></span>
         <span><%= link "Delete", to: user_path(@conn, :delete, user), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger" %></span>
+        <% end %>
+        <% end %>
       </td>
     </tr>
 <% end %>

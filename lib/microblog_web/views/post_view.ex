@@ -14,6 +14,7 @@ defmodule MicroblogWeb.PostView do
     data = %{
       id: post.id,
       text: post.text,
+      likes: post.likes
     }
     if Ecto.assoc_loaded?(post.user) and post.user != nil do
       Map.put(data, :username, post.user.username)

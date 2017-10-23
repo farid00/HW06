@@ -18,14 +18,7 @@
 </ul>
 
 <%= if @current_user do %>
-<span>
-  <button id="like-button" class="btn btn-primary">Like!</button>
-</span>
 <% end %>
-<span><%= link "Edit", to: display_post_path(@conn, :edit, @post), class: "btn btn-primary" %></span>
-<span><%= link "Back", to: display_post_path(@conn, :index), class: "btn btn-primary" %></span>
-
-
 <div id="post-likes"
      data-path="<%= like_path(@conn, :index) %>"
      data-post_id="<%= @post.id %>">
@@ -33,6 +26,12 @@
 </div>
 
 <script id="likes-template" type="text/x-handlebars-template">
+  {{#if liked}}
+    <button id="like-button" class="btn btn-danger">Unlike!</button>
+  {{else}}
+    <button id="like-button" class="btn btn-primary">Like!</button>
+  {{/if}}
+
 	<h2>Liked by</h2>
 
 	<ul>
@@ -41,3 +40,6 @@
 	  	 {{/each}}
 	</ul>
 </script>
+
+<span><%= link "Back", to: display_post_path(@conn, :index), class: "btn btn-primary" %></span>
+

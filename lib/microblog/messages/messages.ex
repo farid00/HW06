@@ -8,6 +8,7 @@ defmodule Microblog.Messages do
 
   alias Microblog.Messages.Post
   alias Microblog.Account.Follow
+  alias Microblog.Feedback.Like
 
   @doc """
   Returns the list of posts.
@@ -19,16 +20,26 @@ defmodule Microblog.Messages do
 
   """
   def list_posts do
-    query = from p in Post, order_by: [desc: p.updated_at]
-    query
-    |> Repo.all()
+    query = from p in Post,
+              group_by: p.id,
+              order_by: [desc: p.updated_at],
+              left_join: l in Like, on: p.id == l.post_id
+
+    query = from [p, l]  in query,
+              select: %{p | likes: count(l.id) }
+    Repo.all(query)
     |> Repo.preload(:user)
   end
 
   def list_posts(current_user_id) do
     IO.puts current_user_id
-    query = from p in Post, order_by: [desc: p.updated_at],
-              join: f in Follow, on: p.user_id == f.following_id and f.user_id == ^current_user_id
+    query = from p in Post,
+              group_by: p.id,
+              order_by: [desc: p.updated_at],
+              join: f in Follow, on: p.user_id == f.following_id and f.user_id == ^current_user_id,
+              left_join: l in Like, on: p.id == l.post_id
+    query = from [p, f, l]  in query,
+              select: %{p | likes: count(l.id) }
     Repo.all(query)
     |> Repo.preload(:user)
   end

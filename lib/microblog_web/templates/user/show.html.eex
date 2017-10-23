@@ -30,8 +30,11 @@
   <%= render "follow_form.html", Map.put(assigns, :action, follow_path(@conn, :create)) %>
 <% end %>
 <% end %>
-
+<%= if @current_user do %>
+<%= if @current_user.id == @user.id do %>
 <span><%= link "Edit", to: user_path(@conn, :edit, @user), class: "btn btn-primary" %></span>
+<% end %>
+<% end %>
 <span><%= link "Back", to: user_path(@conn, :index), class: "btn btn-primary" %></span>
 
 <h2>Users <%= @user.username %> Is Following </h2>

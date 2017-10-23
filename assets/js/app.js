@@ -23,12 +23,16 @@ import "phoenix_html"
 import socket from "./socket"
 let handlebars = require("handlebars");
 let channel = socket.channel("updates:all", {})
+
+handlebars.registerHelper('currentUser', function(block) {
+    return currentUser; //just return global variable value
+});
 $(function() {
   if (!$("#likes-template").length > 0) {
     // Wrong page.
     return;
   }
-
+  let liked = {}
   let tt = $($("#likes-template")[0]);
   let code = tt.html();
   let tmpl = handlebars.compile(code);
@@ -37,15 +41,26 @@ $(function() {
   let path = dd.data('path');
   let p_id = dd.data('post_id');
 
-  let bb = $($("#like-button")[0]);
 
   // let bb = $($("#review-add-button")[0]);
   // let u_id = bb.data('user-id');
 
   function fetch_likes() {
+    function isMatching(like) {
+      return like.user_id == currentUser
+    }
     function got_likes(data) {
+      liked = data['data'].find(isMatching)
+      data["liked"] = liked
+      console.log(data)
       let html = tmpl(data);
       dd.html(html);
+      let bb = $($("#like-button")[0]);
+      if(liked) {
+        bb.click(delete_like);
+      } else {
+        bb.click(add_like);
+      }
     }
 
     $.ajax({
@@ -75,14 +90,30 @@ $(function() {
     });
   }
 
+  function delete_like(id) {
+    var csrf = $('meta[name=csrf]').attr("content")
+    $.ajax({
+      url: "/likes/" + liked.id,
+      headers: {
+        "X-CSRF-TOKEN": csrf
+      },
+      contentType: "application/json",
+      dataType: "json",
+      method: "DELETE",
+      success: fetch_likes,
+    });
+  }
 
-  bb.click(add_like);
+
 
   fetch_likes();
 });
 
 $(function() {
-
+    if (!$("#post-template").length > 0) {
+    // Wrong page.
+    return;
+  }
   let pt = $($("#post-template")[0]);
   let postCode = pt.html();
   let postTmpl = handlebars.compile(postCode);
@@ -93,6 +124,7 @@ $(function() {
 
 
   function fetch_posts() {
+
     function got_posts(data) {
       let html = postTmpl(data);
       target.html(html);
@@ -126,7 +158,7 @@ $(function() {
 
   channel.on("new_message", payload => {
     $("#postTable > tbody").prepend("<tr><td>" + payload.username + "</td><td>" + payload.text + 
-      "</td><td><a href=/posts/" + payload.id + " class= \"btn btn-primary\">Show</a></td></tr>")
+      "</td><td>0</td><td><a href=/posts/" + payload.id + " class= \"btn btn-primary\">Show</a></td></tr>")
   });
 
 

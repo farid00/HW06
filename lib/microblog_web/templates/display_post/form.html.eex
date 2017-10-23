@@ -1,3 +1,6 @@
+<%= if @current_user do %>
+<h2>New Post</h2>
 <meta name="csrf" content="<%= Plug.CSRFProtection.get_csrf_token() %>">
 <textarea id="post-text" class="form-control"></textarea>
 <button id="post-add-button" class="btn btn-primary">Add Post</button>
+<% end %>

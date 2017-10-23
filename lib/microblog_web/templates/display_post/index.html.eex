@@ -17,6 +17,7 @@
     <tr>
       <th>Username</th>
       <th>Post</th>
+      <th>Likes</th>
       <th></th>
     </tr>
   </thead>
@@ -32,6 +33,9 @@
       </td>
       <td>
         {{text}}
+      </td>
+      <td>
+        {{likes}}
       </td>
       <td>
       <a href="/posts/{{id}}" class="btn btn-primary"> Show </a>
